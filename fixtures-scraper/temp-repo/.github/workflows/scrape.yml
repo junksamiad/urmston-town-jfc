@@ -1,0 +1,88 @@
+name: Scrape FA Fixtures
+
+# Schedule runs at 9 AM and 3 PM UK time
+on:
+  schedule:
+    # Cron times are in UTC, UK is UTC+0 (winter) or UTC+1 (summer)
+    - cron: '0 9,15 * * *'  # 9 AM and 3 PM UTC
+  
+  # Allow manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Run in debug mode'
+        required: false
+        default: 'false'
+
+jobs:
+  scrape:
+    name: Scrape Fixtures
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          cd scraper
+          npm install
+      
+      # Install Playwright browsers
+      - name: Install Playwright
+        run: |
+          cd scraper
+          npx playwright install chromium
+          npx playwright install-deps chromium
+      
+      # Run scraper
+      - name: Run fixture scraper
+        env:
+          WIDGET_URL: ${{ secrets.WIDGET_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          DEBUG: ${{ github.event.inputs.debug || 'false' }}
+        run: |
+          cd scraper
+          node index.js
+      
+      # Upload logs on failure
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-logs-${{ github.run_number }}
+          path: scraper/logs/
+          retention-days: 7
+      
+      # Send notification on failure (optional)
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Scrape failed at $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "Check the logs for details" >> $GITHUB_STEP_SUMMARY
+
+  # Optional: Send summary to Slack/Discord/Email
+  notify:
+    name: Send Notification
+    needs: scrape
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Check status
+        run: |
+          if [[ "${{ needs.scrape.result }}" == "success" ]]; then
+            echo "✅ Fixture scrape completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Fixture scrape failed" >> $GITHUB_STEP_SUMMARY
+          fi

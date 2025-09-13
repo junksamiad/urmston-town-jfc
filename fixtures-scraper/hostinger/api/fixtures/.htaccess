@@ -1,0 +1,14 @@
+# Deny access to .env files
+<Files ".env*">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Enable CORS
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+Header set Access-Control-Allow-Headers "Authorization, Content-Type"
+
+# PHP settings
+php_value max_execution_time 60
+php_value memory_limit 128M

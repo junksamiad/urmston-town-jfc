@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Temporary files
+*.tmp
+temp/
+
+# Deployment files (contain credentials)
+HOSTINGER_*.md
+*.sh
+*.exp
+MANUAL_DEPLOYMENT.md
+DEPLOYMENT_INSTRUCTIONS.md
+DATABASE_DEPLOYMENT_GUIDE.md
+.vercel

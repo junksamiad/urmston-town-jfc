@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA Widget - Do Not Index</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #widget-container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>FA Full-Time Widgets - Urmston Town Juniors FC</h1>
+    <p>This page is for data scraping purposes only. Not intended for public viewing.</p>
+    
+    <!-- Timperley & District JFL Widget -->
+    <div id="widget-container-timperley" style="margin-bottom: 30px;">
+        <h2>Timperley & District JFL (League Code: 783655865)</h2>
+        <div id="lrep783655865" style="width: 100%;">
+            <span class="loading">Data loading from FA Full-Time...</span>
+        </div>
+    </div>
+
+    <!-- Load Timperley Widget -->
+    <script language="javascript" type="text/javascript">
+        var lrcode = '783655865';  // Timperley & District JFL code
+    </script>
+    <script language="javascript" type="text/javascript" 
+            src="https://fulltime.thefa.com/client/api/cs1.js"></script>
+
+    <!-- Salford League Widget -->
+    <div id="widget-container-salford" style="margin-bottom: 30px;">
+        <h2>Salford League (League Code: 84363452)</h2>
+        <div id="lrep84363452" style="width: 100%;">
+            <span class="loading">Data loading from FA Full-Time...</span>
+        </div>
+    </div>
+
+    <!-- Load Salford Widget -->
+    <script language="javascript" type="text/javascript">
+        // Clear previous lrcode and set new one
+        var lrcode = '84363452';  // Salford League code
+    </script>
+    <script language="javascript" type="text/javascript" 
+            src="https://fulltime.thefa.com/client/api/cs1.js?league=salford"></script>
+
+    <!-- Debug info (helps with scraping) -->
+    <div id="debug-info" style="margin-top: 40px; padding: 10px; background: #e0e0e0; font-size: 12px;">
+        <strong>Debug Info:</strong><br>
+        Timperley League Code: 783655865<br>
+        Salford League Code: 84363452<br>
+        Last Loaded: <span id="load-time"></span>
+    </div>
+
+    <script>
+        // Add timestamp for debugging
+        document.getElementById('load-time').textContent = new Date().toISOString();
+        
+        // Log when widget loads (helps with Playwright waiting)
+        window.addEventListener('load', function() {
+            console.log('Page loaded at:', new Date().toISOString());
+        });
+
+        // Monitor for widget content changes
+        const observer = new MutationObserver(function(mutations) {
+            console.log('Widget content updated at:', new Date().toISOString());
+        });
+        
+        // Monitor Timperley widget
+        const timperleyWidget = document.getElementById('lrep783655865');
+        if (timperleyWidget) {
+            observer.observe(timperleyWidget, { 
+                childList: true, 
+                subtree: true 
+            });
+        }
+        
+        // Monitor Salford widget
+        const salfordWidget = document.getElementById('lrep84363452');
+        if (salfordWidget) {
+            observer.observe(salfordWidget, { 
+                childList: true, 
+                subtree: true 
+            });
+        }
+    </script>
+</body>
+</html>

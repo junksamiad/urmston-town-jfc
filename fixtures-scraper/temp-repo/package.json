@@ -1,0 +1,19 @@
+{
+  "name": "urmston-fixtures-scraper",
+  "version": "1.0.0", 
+  "description": "Vercel serverless function for scraping FA Full-Time fixtures",
+  "main": "api/scrape.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel",
+    "postinstall": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "axios": "^1.7.0",
+    "jsdom": "^23.0.0"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

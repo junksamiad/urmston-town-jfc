@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA Widget - GitHub Pages</title>
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+    <h1>FA Widget Test on GitHub Pages</h1>
+    <p>Testing if GitHub Actions can scrape from GitHub Pages vs Hostinger</p>
+
+    <!-- Timperley & District JFL Widget -->
+    <div id="widget-container-timperley" style="margin-bottom: 30px;">
+        <h2>Timperley & District JFL (783655865)</h2>
+        <div id="lrep783655865" style="width: 100%;">
+            <span>Loading...</span>
+        </div>
+    </div>
+
+    <!-- Load Timperley Widget -->
+    <script language="javascript" type="text/javascript">
+        var lrcode = '783655865';
+    </script>
+    <script language="javascript" type="text/javascript"
+            src="https://fulltime.thefa.com/client/api/cs1.js"></script>
+
+    <!-- Salford League Widget -->
+    <div id="widget-container-salford" style="margin-bottom: 30px;">
+        <h2>Salford League (84363452)</h2>
+        <div id="lrep84363452" style="width: 100%;">
+            <span>Loading...</span>
+        </div>
+    </div>
+
+    <!-- Load Salford Widget -->
+    <script language="javascript" type="text/javascript">
+        var lrcode = '84363452';
+    </script>
+    <script language="javascript" type="text/javascript"
+            src="https://fulltime.thefa.com/client/api/cs1.js?league=salford"></script>
+
+    <div id="debug">
+        <p>Loaded at: <span id="time"></span></p>
+    </div>
+
+    <script>
+        document.getElementById('time').textContent = new Date().toISOString();
+    </script>
+</body>
+</html>

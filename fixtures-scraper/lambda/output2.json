@@ -1,0 +1,1 @@
+{"statusCode":200,"body":"{\"success\":true,\"message\":\"Fixtures scraped successfully\",\"fixturesFound\":38,\"apiResponse\":{\"success\":true,\"stats\":{\"fixtures_found\":38,\"fixtures_new\":2,\"fixtures_updated\":36,\"errors\":[]},\"timestamp\":\"2025-09-13 13:34:58\"},\"timestamp\":\"2025-09-13T13:34:58.643Z\"}"}

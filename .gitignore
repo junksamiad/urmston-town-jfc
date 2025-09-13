@@ -1,0 +1,87 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Environment files
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+
+# Credentials - IMPORTANT: Never commit these
+**/HOSTINGER_CREDENTIALS.md
+**/HOSTINGER_DB_CREDENTIALS.md
+**/*credentials*
+**/*CREDENTIALS*
+**/*secret*
+**/*SECRET*
+
+# Sensitive PHP files with credentials
+fixtures-scraper/hostinger/.env.php
+fixtures-scraper/hostinger/api/.env.php
+
+# AWS credentials
+.aws/
+~/.aws/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+**/.next/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Lambda build artifacts
+fixtures-scraper/lambda/node_modules/
+fixtures-scraper/lambda/package-lock.json
+
+# Test outputs
+output.json
+test-output.json
+*.test.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Database dumps
+*.sql
+*.dump
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# SSH keys
+*.pem
+*.key
+id_rsa*
