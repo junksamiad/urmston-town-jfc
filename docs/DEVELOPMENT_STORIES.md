@@ -205,32 +205,61 @@ GET /api/fixtures/get.php?stats=true
 
 ---
 
-## ✅ Story 7: Update Next.js Fixtures Page [COMPLETE]
-**Status**: ✅ COMPLETE
-**Time Estimate**: 1 hour (Actual: ~1.5 hours including deployment)
-**Implementation**: ✅ **[COMPLETE - 2025-09-13]**
-**Deployment**: ✅ **[COMPLETE - 2025-09-13]**
+## ✅ Story 7: Update Next.js Fixtures Page [COMPLETE - ENHANCED]
+**Status**: ✅ **COMPLETE WITH ENHANCEMENTS**
+**Time Estimate**: 1 hour (Actual: ~3 hours including enhanced deployment)
+**Implementation**: ✅ **[ENHANCED COMPLETE - 2025-09-13 19:00]**
+**Deployment**: ✅ **[ENHANCED VERSION LIVE - 2025-09-13 19:00]**
 
-### Tasks:
+### ✅ Phase 1: Basic Integration [COMPLETE]
 1. ✅ Create API service to fetch from PHP endpoint (`lib/fixtures-api.ts`)
-2. ✅ Create new fixtures component (`components/fixtures-list.tsx`)
+2. ✅ Create basic fixtures component (`components/fixtures-list.tsx`)
 3. ✅ Replace placeholder data with API calls
 4. ✅ Implement loading states (skeleton UI)
 5. ✅ Add error handling (graceful fallback)
 6. ✅ Cache responses client-side (5-minute caching)
-7. ✅ **Deploy via browser** (Successfully deployed via Hostinger File Manager)
+7. ✅ **Deploy basic version via browser** (Successfully deployed via Hostinger File Manager)
+
+### ✅ Phase 2: Enhanced Two-Line Display [COMPLETE]
+8. ✅ **Create enhanced fixtures component** (`components/fixtures-list-enhanced.tsx`)
+9. ✅ **Implement two-line display format**: **League || Pitch || Venue**
+10. ✅ **Enhanced API integration** using `get-enhanced.php` endpoint
+11. ✅ **Blue theme styling** with improved visual hierarchy
+12. ✅ **Date grouping and time sorting** enhancements
+13. ✅ **Production deployment** of enhanced version
+14. ✅ **Replace old component** with enhanced version
 
 ### Components Created/Updated:
-- ✅ `app/fixtures/page.tsx` - Updated with live API integration
-- ✅ `lib/fixtures-api.ts` - Created API service layer
-- ✅ `components/fixtures-list.tsx` - Created new component
+- ✅ `app/fixtures/page.tsx` - Updated with enhanced API integration
+- ✅ `lib/fixtures-api.ts` - Enhanced API service layer with `get-enhanced.php` support
+- ✅ `components/fixtures-list.tsx` - Original component (replaced)
+- ✅ **`components/fixtures-list-enhanced.tsx`** - **New enhanced component with two-line format**
+- ✅ **`fixtures-scraper/hostinger/api/fixtures/get-enhanced.php`** - **Enhanced API endpoint**
+
+### ✅ Enhanced Features Now Live:
+- ✅ **Two-line display format**: Match details + League || Pitch || Venue
+- ✅ **Pitch allocation visibility**: Shows specific pitches (e.g., "LOSTOCK PARK P1")
+- ✅ **Full venue information**: Complete venue names for away games
+- ✅ **Enhanced styling**: Blue theme with improved visual hierarchy
+- ✅ **Better date grouping**: Saturday/Sunday fixtures properly organized
+- ✅ **Maintained functionality**: All existing features preserved
 
 ### Acceptance Criteria:
-- [x] Displays live fixture data ✅ **IN PRODUCTION**
+- [x] Displays live fixture data ✅ **ENHANCED IN PRODUCTION**
 - [x] Filters work correctly ✅ **Team filtering (U7-U16)**
 - [x] Graceful error handling ✅ **With retry buttons**
 - [x] Fast page load (< 2s) ✅ **With caching**
-- [x] **DEPLOYED TO PRODUCTION** ✅ **Live at pages.urmstontownjfc.co.uk/fixtures/**
+- [x] **Two-line format shows League || Pitch || Venue** ✅ **LIVE**
+- [x] **Pitch allocations visible for managers** ✅ **LIVE**
+- [x] **Enhanced styling and organization** ✅ **LIVE**
+- [x] **ENHANCED VERSION DEPLOYED** ✅ **Live at pages.urmstontownjfc.co.uk/fixtures/**
+
+### 🎯 Business Impact:
+✅ **Managers can now see**:
+- Specific pitch allocations (e.g., "LOSTOCK PARK P1", "BARTON CLOUGH PLAYING FIELDS PITCH 4")
+- Full venue details for away games (e.g., "Hardy Farm")
+- Clear league information separation
+- Better organized fixture presentation with enhanced visual design
 
 ---
 

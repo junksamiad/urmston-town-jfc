@@ -20,6 +20,7 @@ node_modules/
 # Sensitive PHP files with credentials
 fixtures-scraper/hostinger/.env.php
 fixtures-scraper/hostinger/api/.env.php
+fixtures-scraper/hostinger/api/fixtures/get-enhanced.php
 
 # AWS credentials
 .aws/

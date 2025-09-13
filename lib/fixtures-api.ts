@@ -19,13 +19,23 @@ export interface ApiFixture {
   is_home: boolean;
   formatted_date: string;
   formatted_time: string;
+  date_only: string; // YYYY-MM-DD
+  pitch: string | null;
+  original_venue: string | null;
+}
+
+export interface FixtureGroup {
+  date: string; // YYYY-MM-DD
+  formatted_date: string; // Display format
+  fixtures: ApiFixture[];
 }
 
 export interface ApiResponse {
   success: boolean;
-  fixtures: ApiFixture[];
+  fixtures: ApiFixture[] | FixtureGroup[];
   total?: number;
   error?: string;
+  grouped_by_date?: boolean;
 }
 
 export interface FixturesFilters {
@@ -34,6 +44,7 @@ export interface FixturesFilters {
   from?: string; // YYYY-MM-DD format
   to?: string; // YYYY-MM-DD format
   limit?: number;
+  group_by_date?: boolean;
 }
 
 // Simple in-memory cache
@@ -109,7 +120,11 @@ export async function getFixtures(filters: FixturesFilters = {}): Promise<ApiRes
     params.append("limit", filters.limit.toString());
   }
 
-  const url = `${API_BASE_URL}/get.php${params.toString() ? `?${params.toString()}` : ""}`;
+  if (filters.group_by_date) {
+    params.append("group_by_date", "true");
+  }
+
+  const url = `${API_BASE_URL}/get-enhanced.php${params.toString() ? `?${params.toString()}` : ""}`;
 
   const data = await fetchFromAPI(url);
 
@@ -128,6 +143,7 @@ export async function getUpcomingFixtures(team?: string, limit: number = 20): Pr
     status: "upcoming",
     team,
     limit,
+    group_by_date: true,
   });
 }
 
@@ -136,6 +152,7 @@ export async function getRecentResults(team?: string, limit: number = 20): Promi
     status: "completed",
     team,
     limit,
+    group_by_date: true,
   });
 }
 

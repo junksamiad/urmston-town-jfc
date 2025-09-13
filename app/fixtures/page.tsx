@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { ClubHeader } from "@/components/club-navigation"
-import { FixturesList } from "@/components/fixtures-list"
+import { FixturesListEnhanced } from "@/components/fixtures-list-enhanced"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -79,11 +79,11 @@ export default function FixturesPage() {
           </TabsList>
 
           <TabsContent value="upcoming">
-            <FixturesList type="upcoming" selectedTeam={selectedTeam} />
+            <FixturesListEnhanced type="upcoming" selectedTeam={selectedTeam} />
           </TabsContent>
 
           <TabsContent value="results">
-            <FixturesList type="results" selectedTeam={selectedTeam} />
+            <FixturesListEnhanced type="results" selectedTeam={selectedTeam} />
           </TabsContent>
         </Tabs>
       </div>

@@ -63,8 +63,10 @@ FA Full-Time → Hidden HTML Page → AWS Lambda (Puppeteer) → PHP Endpoint �
 
 #### 2.6 Next.js Integration
 - **Location**: Existing fixtures page
-- **Function**: Fetches from API and displays with custom UI
+- **Function**: Fetches from API and displays with enhanced UI
 - **Features**: Team filtering, date grouping, results/upcoming tabs
+- **Enhanced Display**: Two-line format showing League || Pitch || Venue
+- **Airtable Integration**: Pitch allocations and venue details for Urmston teams
 
 ---
 
@@ -215,12 +217,14 @@ EventBridge Rules:
 3. ✅ Create public API endpoint (COMPLETE - 2025-09-12)
 4. ✅ Add error logging (COMPLETE - 2025-09-12)
 
-### Phase 4: Integration (2 hours) ✅ **COMPLETE**
+### Phase 4: Integration (2 hours) ✅ **COMPLETE - ENHANCED**
 1. ✅ Update Next.js fixtures page (COMPLETE - 2025-09-13)
 2. ✅ Connect to new API (COMPLETE - 2025-09-13)
 3. ✅ Implement caching (5-minute client-side caching)
 4. ✅ Style and polish (Loading states, error handling)
 5. ✅ **Deploy to production** (COMPLETE - 2025-09-13 via Hostinger File Manager)
+6. ✅ **Enhanced two-line display format** (COMPLETE - 2025-09-13)
+7. ✅ **Pitch allocation visibility** (LIVE - Airtable integration)
 
 ### Phase 5: Testing & Deployment (1 hour)
 1. End-to-end testing
@@ -279,6 +283,8 @@ EventBridge Rules:
 - [x] Page loads in under 2 seconds ✅ **IN PRODUCTION**
 - [x] Mobile responsive design ✅ **DEPLOYED**
 - [x] **Production deployment** ✅ **COMPLETE** (Deployed via Hostinger File Manager)
+- [x] **Enhanced two-line display format** ✅ **LIVE** (League || Pitch || Venue)
+- [x] **Pitch allocation visibility for managers** ✅ **LIVE** (Airtable integration)
 - [x] Graceful fallback if scraping fails (retry logic implemented)
 
 ---
