@@ -428,4 +428,115 @@ aws logs tail /aws/lambda/urmston-fixtures-scraper \
 - Enhanced deployment process documented for future updates
 
 ---
-*Last Updated: 2025-09-13 19:00 - Enhanced fixtures deployment completed successfully*
+
+## 🐛 BUG FIXES - Frontend Issues Resolved - 2025-09-13 21:30
+
+### Issues Identified and Fixed:
+
+#### 1. League Field Not Displaying on Frontend ✅
+**Problem**: The 'league' field from the Lambda scraper wasn't appearing on the frontend
+**Root Cause**: PHP ingestion endpoint had incorrect field mapping
+**Location**: `/fixtures-scraper/hostinger/api/fixtures/ingest.php` line 99
+
+**Fix Applied**:
+```php
+// BEFORE (incorrect):
+':competition' => $fixture['competition'] ?? null,
+
+// AFTER (correct):
+':competition' => $fixture['league'] ?? $fixture['competition'] ?? null,
+```
+**Result**: League data now correctly flows from Lambda → PHP → Database → Frontend
+
+#### 2. Past Fixtures Still Showing ✅
+**Problem**: Fixtures that had already occurred were still displaying as "upcoming"
+**Solution**: Added time-based filtering in the frontend component
+**Location**: `/components/fixtures-list-enhanced.tsx` lines 41-62
+
+**Fix Applied**:
+```typescript
+// Filter out past fixtures for upcoming fixtures only
+if (type === "upcoming") {
+  const now = new Date()
+
+  if (isFixtureGroupArray(response.fixtures)) {
+    // Filter grouped fixtures
+    filteredFixtures = (response.fixtures as FixtureGroup[]).map(group => ({
+      ...group,
+      fixtures: group.fixtures.filter(fixture => {
+        const fixtureDateTime = new Date(fixture.fixture_date)
+        return fixtureDateTime > now
+      })
+    })).filter(group => group.fixtures.length > 0)
+  } else {
+    // Filter flat fixtures array
+    filteredFixtures = (response.fixtures as ApiFixture[]).filter(fixture => {
+      const fixtureDateTime = new Date(fixture.fixture_date)
+      return fixtureDateTime > now
+    })
+  }
+}
+```
+**Result**: Only future fixtures now display in the "Upcoming Fixtures" section
+
+#### 3. Frontend Lost CSS Formatting ✅
+**Problem**: After initial deployment attempt, the site lost all styling
+**Root Cause**: The `_next` folder containing CSS/JS assets was missing
+**Solution**: Re-deployed complete frontend build via Hostinger File Manager
+
+**Deployment Process**:
+1. Created deployment archive with complete build
+2. Uploaded via Hostinger File Manager browser interface
+3. Extracted files to `public_html/` directory
+4. Verified all assets including `_next` folder were present
+**Result**: Full styling and functionality restored
+
+#### 4. Duplicate Fixtures Bug ✅
+**Problem**: Same fixture (ID 83) appeared twice in grouped API responses
+**Root Cause**: PHP foreach loop using reference (`&$fixture`) without unsetting
+**Location**: `/fixtures-scraper/hostinger/api/fixtures/get-enhanced.php` line 287
+
+**Fix Applied**:
+```php
+// Process fixtures with reference
+foreach ($fixtures as &$fixture) {
+    // ... enrichment logic ...
+    $fixture = enrichFixture($fixture, $airtableTeams);
+}
+unset($fixture); // Important: unset reference to avoid bugs
+
+// Group fixtures by date if requested
+```
+**Result**: Each fixture now appears only once with correct data
+
+### Deployment Method Used:
+**Hostinger File Manager Upload Process**:
+1. Fixed files locally in project
+2. Created clean versions without corruption
+3. Navigated to Hostinger File Manager
+4. Uploaded fixed PHP files individually
+5. Used "Replace" option to overwrite existing files
+6. Verified fixes via API testing
+
+### System Verification:
+**All Tests Passing**:
+```bash
+# API Test - Returns correct fixtures without duplicates
+curl -s "https://pages.urmstontownjfc.co.uk/api/fixtures/get-enhanced.php?status=upcoming&group_by_date=true"
+
+# Lambda Test - Successfully scrapes and ingests
+aws lambda invoke --function-name urmston-fixtures-scraper --profile footballclub --region eu-north-1 response.json
+
+# Database - Shows 4 unique fixtures
+# Frontend - Displays fixtures correctly without duplicates
+```
+
+### Final Status:
+✅ **League data displaying correctly**
+✅ **Past fixtures filtered out properly**
+✅ **CSS/styling fully restored**
+✅ **No duplicate fixtures**
+✅ **All components working in harmony**
+
+---
+*Last Updated: 2025-09-13 21:30 - All frontend issues resolved and system fully operational*

@@ -49,6 +49,8 @@ Deploy to: https://pages.urmstontownjfc.co.uk/fa-widget.html
 4. ✅ Create environment template (.env.example)
 5. ✅ Create deployment helper script
 6. ✅ Deploy to Hostinger via phpMyAdmin
+7. ✅ **Fixed league field mapping issue in ingest.php** (2025-09-13)
+8. ✅ **Fixed duplicate fixtures bug in get-enhanced.php** (2025-09-13)
 
 ### Files Created:
 ```
@@ -263,7 +265,49 @@ GET /api/fixtures/get.php?stats=true
 
 ---
 
-## 🎯 Story 8: End-to-End Testing
+## ✅ Story 8: Bug Fixes & Frontend Issues [COMPLETE]
+**Time Estimate**: 2 hours (Actual: ~1.5 hours)
+**Priority**: P0 - Critical
+**Completed**: 2025-09-13 21:30
+
+### Issues Identified and Resolved:
+
+#### 1. ✅ League Field Not Displaying
+- **Problem**: Lambda scraper sends 'league' but PHP expects 'competition'
+- **Fix**: Updated `ingest.php` line 99 to map `$fixture['league']` correctly
+- **Result**: League data now flows through entire pipeline
+
+#### 2. ✅ Past Fixtures Still Showing
+- **Problem**: Expired fixtures appearing in "Upcoming" section
+- **Fix**: Added time-based filtering in `fixtures-list-enhanced.tsx`
+- **Result**: Only future fixtures display in upcoming section
+
+#### 3. ✅ CSS Formatting Lost
+- **Problem**: `_next` folder missing after deployment
+- **Fix**: Re-deployed complete build via Hostinger File Manager
+- **Result**: Full styling and functionality restored
+
+#### 4. ✅ Duplicate Fixtures Bug
+- **Problem**: PHP foreach with reference causing duplicate data
+- **Fix**: Added `unset($fixture)` after loop in `get-enhanced.php`
+- **Result**: Each fixture appears only once with correct data
+
+### Deployment Method:
+- ✅ Used Hostinger File Manager browser interface
+- ✅ Uploaded fixed PHP files individually
+- ✅ Used "Replace" option to overwrite existing files
+- ✅ Verified all fixes via API and frontend testing
+
+### Acceptance Criteria:
+- [x] League data displays correctly on frontend
+- [x] Only future fixtures shown in upcoming section
+- [x] CSS/styling fully functional
+- [x] No duplicate fixtures in API or frontend
+- [x] All components working in harmony
+
+---
+
+## 🎯 Story 9: End-to-End Testing
 **Time Estimate**: 45 minutes  
 **Priority**: P1 - High  
 
