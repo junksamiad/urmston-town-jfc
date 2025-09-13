@@ -4,13 +4,20 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, MapPin, RefreshCw, AlertCircle, Home } from "lucide-react"
+import { Calendar, Clock, MapPin, RefreshCw, AlertCircle, Home, AlertTriangle } from "lucide-react"
 import { getUpcomingFixtures, getRecentResults, type ApiFixture, type FixtureGroup, type ApiResponse, clearFixturesCache } from "@/lib/fixtures-api"
 
 interface FixturesListProps {
   type: "upcoming" | "results"
   selectedTeam: string
   className?: string
+}
+
+interface PitchClash {
+  venue: string
+  pitch: string
+  datetime: string
+  fixtures: ApiFixture[]
 }
 
 function isFixtureGroup(fixture: ApiFixture | FixtureGroup): fixture is FixtureGroup {
@@ -26,6 +33,41 @@ export function FixturesListEnhanced({ type, selectedTeam, className = "" }: Fix
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isGrouped, setIsGrouped] = useState(false)
+  const [pitchClashes, setPitchClashes] = useState<PitchClash[]>([])
+
+  // Function to detect pitch clashes
+  const detectPitchClashes = (fixtures: ApiFixture[]): PitchClash[] => {
+    if (type !== "upcoming") return [] // Only check clashes for upcoming fixtures
+
+    const clashMap = new Map<string, ApiFixture[]>()
+
+    // Group fixtures by venue + pitch + datetime
+    fixtures.forEach(fixture => {
+      if (fixture.venue && fixture.pitch && fixture.fixture_date) {
+        const key = `${fixture.venue}|${fixture.pitch}|${fixture.fixture_date}`
+        if (!clashMap.has(key)) {
+          clashMap.set(key, [])
+        }
+        clashMap.get(key)!.push(fixture)
+      }
+    })
+
+    // Find clashes (where multiple fixtures have same venue + pitch + datetime)
+    const clashes: PitchClash[] = []
+    clashMap.forEach((fixtures, key) => {
+      if (fixtures.length > 1) {
+        const [venue, pitch, datetime] = key.split('|')
+        clashes.push({
+          venue,
+          pitch,
+          datetime,
+          fixtures
+        })
+      }
+    })
+
+    return clashes
+  }
 
   const loadFixtures = async () => {
     try {
@@ -40,9 +82,26 @@ export function FixturesListEnhanced({ type, selectedTeam, className = "" }: Fix
 
       setFixturesData(response.fixtures)
       setIsGrouped(response.grouped_by_date || false)
+
+      // Detect pitch clashes for upcoming fixtures
+      if (type === "upcoming") {
+        // Flatten fixtures if grouped for clash detection
+        let allFixtures: ApiFixture[] = []
+        if (response.grouped_by_date && isFixtureGroupArray(response.fixtures)) {
+          allFixtures = (response.fixtures as FixtureGroup[]).flatMap(group => group.fixtures)
+        } else {
+          allFixtures = response.fixtures as ApiFixture[]
+        }
+
+        const clashes = detectPitchClashes(allFixtures)
+        setPitchClashes(clashes)
+      } else {
+        setPitchClashes([])
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load fixtures")
       setFixturesData([])
+      setPitchClashes([])
     } finally {
       setLoading(false)
     }
@@ -205,6 +264,37 @@ export function FixturesListEnhanced({ type, selectedTeam, className = "" }: Fix
 
   return (
     <div className={`space-y-6 ${className}`}>
+      {/* Pitch Clash Alert */}
+      {pitchClashes.length > 0 && (
+        <Card className="border-amber-200 bg-amber-50">
+          <CardContent className="pt-4">
+            <div className="flex items-start space-x-2">
+              <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div className="text-amber-800">
+                <div className="font-semibold text-base">⚠️ Pitch Clash Detected!</div>
+                <div className="mt-2 space-y-2">
+                  {pitchClashes.map((clash, index) => (
+                    <div key={index} className="text-sm">
+                      <div className="font-medium">
+                        {clash.venue} - {clash.pitch} at{' '}
+                        {new Date(clash.datetime).toLocaleString()}
+                      </div>
+                      <div className="ml-4 mt-1 space-y-1">
+                        {clash.fixtures.map((fixture, idx) => (
+                          <div key={idx} className="text-xs text-amber-700">
+                            • {fixture.home_team} vs {fixture.away_team}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {isGrouped && isFixtureGroupArray(fixturesData) ? (
         // Grouped by date display
         fixturesData.map((group) => (

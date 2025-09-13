@@ -12,6 +12,23 @@ This document outlines the complete deployment process for all components of the
 5. **AWS Lambda** - Automated scraper
 6. **Environment Config** - Credentials and settings
 
+## SSH Access Credentials
+
+**Server**: `82.29.186.226`
+**Port**: `65002`
+**Username**: `u790502142`
+**Password**: `UrmstonSSH2025!`
+
+```bash
+# SSH Command
+ssh -p 65002 u790502142@82.29.186.226
+
+# SCP Commands
+scp -P 65002 [local-file] u790502142@82.29.186.226:~/public_html/[remote-path]
+```
+
+**Note**: If SSH credentials fail, use Hostinger File Manager as backup method.
+
 ## Pre-Deployment Checklist
 
 - [ ] Local development working (`npm run dev`)
@@ -30,7 +47,7 @@ npm run build
 ```
 
 ### 2. Deploy Environment Configuration
-**Method A: SSH**
+**Method A: SSH** (see SSH credentials section above)
 ```bash
 cd fixtures-scraper/
 scp -P 65002 hostinger/.env.php u790502142@82.29.186.226:~/public_html/.env.php
