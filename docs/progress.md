@@ -230,5 +230,20 @@ aws logs tail /aws/lambda/urmston-fixtures-scraper \
 ✅ Simplified maintenance with DELETE-then-INSERT pattern
 ✅ Reduced data storage from 40+ to ~5 fixtures
 
+## 📦 Version Control
+
+### GitHub Repository
+- **URL**: https://github.com/junksamiad/urmston-town-jfc
+- **Status**: Public repository with complete codebase
+- **Security**: All credentials and sensitive data excluded via .gitignore
+- **Contents**: 111 files including Lambda code, PHP endpoints, Next.js frontend, and documentation
+
+### Repository Setup Process
+1. Created comprehensive .gitignore to exclude all sensitive files
+2. Removed AWS credentials from documentation (replaced with [REDACTED])
+3. Initialized Git repository with clean history
+4. Created public GitHub repository
+5. Successfully pushed all code (19,244 lines across 111 files)
+
 ---
-*Last Updated: 2025-09-13 16:10*
+*Last Updated: 2025-09-13 16:25*
